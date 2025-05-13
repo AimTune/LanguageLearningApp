@@ -1,6 +1,6 @@
 ﻿using Shared.Domain;
 
-namespace LanguageLearningApp.Domain;
+namespace LanguageLearningApp.Domain.Words;
 
 public class WordCategory : Entity<Guid>
 {

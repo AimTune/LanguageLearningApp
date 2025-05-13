@@ -1,7 +1,7 @@
 ﻿using LanguageLearningApp.Domain.Abstractions;
 using Shared.Domain;
 
-namespace LanguageLearningApp.Domain.ChainOfResponsibilities.StagePromotion;
+namespace LanguageLearningApp.Domain.UserWords.ChainOfResponsibilities.StagePromotion;
 
 public class SetPromotionChainsHandler : ILanguageHandler<UserWordLearningProgress>
 {
@@ -14,7 +14,8 @@ public class SetPromotionChainsHandler : ILanguageHandler<UserWordLearningProgre
         {
             return _nextHandler.Handle(progress);
         }
-
+        
+        progress.PromoteTo(LearningStage.Learnt);
         return Result.Success();
     }
 

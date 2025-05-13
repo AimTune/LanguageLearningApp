@@ -1,6 +1,6 @@
 ﻿using Shared.Domain;
 
-namespace LanguageLearningApp.Domain.ChainOfResponsibilities.StagePromotion.Rules;
+namespace LanguageLearningApp.Domain.UserWords.ChainOfResponsibilities.StagePromotion.Rules;
 
 public class DailyToWeeklyPromotionHandler : SetPromotionChainsHandler
 {
@@ -8,7 +8,7 @@ public class DailyToWeeklyPromotionHandler : SetPromotionChainsHandler
     {
         if (progress.Stage == LearningStage.Daily && progress.CorrectAnswersInARow >= 7)
         {
-            progress.PromoteTo(LearningStage.Weekly);
+            progress.PromoteTo(LearningStage.Daily);
             return Result.Success();
         }
 

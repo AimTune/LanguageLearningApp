@@ -1,6 +1,7 @@
-﻿using Shared.Domain;
+﻿using LanguageLearningApp.Domain.Words.Events;
+using Shared.Domain;
 
-namespace LanguageLearningApp.Domain;
+namespace LanguageLearningApp.Domain.Words;
 
 public class Word : Entity<Guid>
 {
@@ -42,7 +43,7 @@ public class Word : Entity<Guid>
         //    return Result.Failure("This synonym already exists.");
 
         _synonyms.Add(synonym);
-        //Raise(new SynonymAddedEvent());
+        Raise(new SynonymAddedEvent(Id, synonym.Id));
 
         return Result.Success();
     }
@@ -50,7 +51,7 @@ public class Word : Entity<Guid>
     public Result AddAnthonym(Word synonym)
     {
         _anthonyms.Add(synonym);
-        //Raise(new AnthonymAddedEvent());
+        Raise(new AnthonymAddedEvent(Id, synonym.Id));
 
         return Result.Success();
     }
@@ -58,7 +59,7 @@ public class Word : Entity<Guid>
     public Result AddExampleSentence(string sentence)
     {
         _examplesSentences.Add(sentence);
-        //Raise(new ExampleSentenceAddedEvent());
+        Raise(new ExampleSentenceAddedEvent(Id, sentence));
         // Business kurallarıyla bu eventten sonra yeni cümle eklendi görmek ister misin falan diyeceğiz
 
         return Result.Success();

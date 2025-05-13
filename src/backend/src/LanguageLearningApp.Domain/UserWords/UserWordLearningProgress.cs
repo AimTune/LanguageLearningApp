@@ -1,12 +1,8 @@
-﻿using LanguageLearningApp.Domain.ChainOfResponsibilities.StagePromotion.Rules;
+﻿using LanguageLearningApp.Domain.UserWords.ChainOfResponsibilities.StagePromotion.Rules;
+using LanguageLearningApp.Domain.UserWords.Events;
 using Shared.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LanguageLearningApp.Domain;
+namespace LanguageLearningApp.Domain.UserWords;
 
 public class UserWordLearningProgress : Entity<Guid>
 {
@@ -88,8 +84,9 @@ public class UserWordLearningProgress : Entity<Guid>
         var dailyToWeekly = new DailyToWeeklyPromotionHandler();
 
         dailyToWeekly
-            .SetNext(new WeeklyToMonthlyPromotionHandler());
-            // .SetNext(new MonthlyToYearlyPromotionHandler());
+            .SetNext(new WeeklyToMonthlyPromotionHandler())
+            .SetNext(new MonthlyToYearlyPromotionHandler())
+            .SetNext(new YearlyToLearntPromotionHandler());
 
         var result = dailyToWeekly.Handle(this);
 
@@ -98,95 +95,5 @@ public class UserWordLearningProgress : Entity<Guid>
         }
 
         return Result.Success("Correct answer. Not enough streak for promotion.");
-    }
-}
-
-public enum LearningStage
-{
-    Daily,
-    Weekly,
-    Monthly,
-    Yearly
-}
-
-public class UserStartedLearningWordDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-
-    public UserStartedLearningWordDomainEvent(Guid userId, Guid wordId)
-    {
-        UserId = userId;
-        WordId = wordId;
-    }
-}
-
-public class WordAnsweredCorrectlyDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-    public LearningStage CurrentStage { get; }
-
-    public WordAnsweredCorrectlyDomainEvent(Guid userId, Guid wordId, LearningStage currentStage)
-    {
-        UserId = userId;
-        WordId = wordId;
-        CurrentStage = currentStage;
-    }
-}
-
-public class WordAnsweredIncorrectlyDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-
-    public WordAnsweredIncorrectlyDomainEvent(Guid userId, Guid wordId)
-    {
-        UserId = userId;
-        WordId = wordId;
-    }
-}
-
-
-public class WordStagePromotedDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-    public LearningStage NewStage { get; }
-
-    public WordStagePromotedDomainEvent(Guid userId, Guid wordId, LearningStage newStage)
-    {
-        UserId = userId;
-        WordId = wordId;
-        NewStage = newStage;
-    }
-}
-
-
-public class WordMasteredDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-
-    public WordMasteredDomainEvent(Guid userId, Guid wordId)
-    {
-        UserId = userId;
-        WordId = wordId;
-    }
-}
-
-public class WordStageDemotedDomainEvent : DomainEvent
-{
-    public Guid UserId { get; }
-    public Guid WordId { get; }
-    public LearningStage PreviousStage { get; }
-    public LearningStage NewStage { get; }
-
-    public WordStageDemotedDomainEvent(Guid userId, Guid wordId, LearningStage previousStage, LearningStage newStage)
-    {
-        UserId = userId;
-        WordId = wordId;
-        PreviousStage = previousStage;
-        NewStage = newStage;
     }
 }

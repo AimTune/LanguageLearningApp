@@ -1,12 +1,12 @@
 ﻿using Shared.Domain;
 
-namespace LanguageLearningApp.Domain.ChainOfResponsibilities.StagePromotion.Rules;
+namespace LanguageLearningApp.Domain.UserWords.ChainOfResponsibilities.StagePromotion.Rules;
 
-public class WeeklyToMonthlyPromotionHandler : SetPromotionChainsHandler
+public class YearlyToLearntPromotionHandler : SetPromotionChainsHandler
 {
     public override Result Handle(UserWordLearningProgress progress)
     {
-        if (progress.Stage == LearningStage.Weekly && progress.CorrectAnswersInARow >= 3)
+        if (progress.Stage == LearningStage.Yearly && progress.CorrectAnswersInARow !>= 1)
         {
             progress.PromoteTo(LearningStage.Monthly);
             return Result.Success();
